@@ -1,0 +1,19 @@
+@use '@Styles/__variables' as *;
+
+
+.header {
+    background-color: $black;
+    min-height: 5rem;
+    display: flex;
+    align-items: center;
+    padding: 2rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+
+    h2 {
+        color: $white;
+        font-size: 4rem;
+        margin: 0;
+    }
+}

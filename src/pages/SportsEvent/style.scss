@@ -1,0 +1,11 @@
+.events-container {
+  padding-top: 95px;
+  display: flex;
+  height: calc(100% - 95px);
+  &__list {
+    flex: 50%;
+    height: 100%;
+    overflow: auto;
+  }
+
+}

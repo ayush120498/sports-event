@@ -1,0 +1,40 @@
+@use '@Styles/__variables' as *;
+
+.sports-card {
+    box-shadow: $card-shadow;
+    padding: 1.2rem;
+    border-radius: 0.4rem;
+    overflow: hidden;
+
+    &__container {
+        display: flex;
+        align-items: center;
+    }
+
+    &__avatar {
+        margin-right: 10px;
+    }
+
+    &__content {
+        width: 100%;
+
+    }
+
+    &__heading {
+        font-weight: $font-weight-bold;
+        font-size: 1.8rem;
+        line-height: 2.4rem;
+
+    }
+
+    &__sub-heading {
+        font-weight: 400;
+        font-size: 1.4rem;
+        line-height: 2rem;
+        color: $gray;
+    }
+
+    &__button {
+        margin-top: 12px;
+    }
+}

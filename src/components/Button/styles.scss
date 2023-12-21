@@ -1,0 +1,21 @@
+@use '@Styles/__variables' as *;
+
+
+.button {
+  color: $primary;
+  font-weight: 600;
+  background-color: $indigo-1;
+  border-color: $indigo-1;
+  line-height: 2rem;
+  font-size: 1.4rem;
+  border-radius: 4px;
+  padding: 0 1.2rem;
+  border: 0;
+  height: 3.2rem;
+  outline: none;
+
+
+  &:hover, &:focus, &:active{
+    background-color: $indigo-2;
+  }
+}

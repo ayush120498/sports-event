@@ -1,0 +1,21 @@
+@use '@Styles/__variables' as *;
+
+.container {
+  height: 100vh;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  margin: 0;
+  font-size: 1.6rem;
+  font-family: system-ui, sans-serif, Arial, Helvetica;
+  color: $black;
+}
+
+
+p,h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+}
