@@ -13,7 +13,15 @@ interface ISportsEventResponse {
 	end_time: string;
 }
 
-const useEvents = (): [boolean, ISportEvent[], ISportEvent[], Error | null, (selectedEvent: ISportEvent[]) => void] => {
+interface IListResponse {
+	isLoading: boolean;
+	allEvent: ISportEvent[];
+	selectedEvents: ISportEvent[];
+	error: Error | null;
+	updateEvents: (selectedEvent: ISportEvent[]) => void;
+}
+
+const useEvents = (): IListResponse => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [events, setEvents] = useState<ISportEvent[]>([]);
 	const [selectedEvents, setSelectedEvents] = useState<ISportEvent[]>([]);
@@ -24,11 +32,11 @@ const useEvents = (): [boolean, ISportEvent[], ISportEvent[], Error | null, (sel
 			id: event.id,
 			eventName: event.event_name,
 			eventType: event.event_category,
-			dateOfEvent: formatDate(event.start_time) || '',
-			startTime: getFormattedTime(event.start_time) || '',
-			endTime: getFormattedTime(event.end_time) || '',
-			startDateTime: formatDateTime(event.start_time) || '',
-			endDateTime: formatDateTime(event.end_time) || '',
+			dateOfEvent: formatDate(event.start_time),
+			startTime: getFormattedTime(event.start_time),
+			endTime: getFormattedTime(event.end_time),
+			startDateTime: formatDateTime(event.start_time),
+			endDateTime: formatDateTime(event.end_time),
 		}));
 
 		return parsedData;
@@ -55,7 +63,7 @@ const useEvents = (): [boolean, ISportEvent[], ISportEvent[], Error | null, (sel
 			const parsedEvents = parseEventData(data);
 			fetchDataFromLocalStorage(parsedEvents);
 		} catch (error) {
-			setError(Error('Error in fetching events'));
+			setError(new Error('Error in fetching events'));
 		}
 		setIsLoading(false);
 	}, [fetchDataFromLocalStorage]);
@@ -70,7 +78,13 @@ const useEvents = (): [boolean, ISportEvent[], ISportEvent[], Error | null, (sel
 		setItem(EVENTS_LOCAL_STORAGE_KEY, selectedEventList);
 	}, []);
 
-	return [isLoading, events, selectedEvents, isError, updateEvents];
+	return {
+		isLoading,
+		allEvent: events,
+		selectedEvents,
+		error: isError,
+		updateEvents,
+	};
 };
 
 export default useEvents;

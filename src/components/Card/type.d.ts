@@ -8,4 +8,5 @@ interface ISportsCard {
 	onClick: React.MouseEventHandler<HTMLButtonElement>;
 	buttonTitle: string;
 	date: string;
+	buttonDataTestId?: string;
 }

@@ -6,4 +6,5 @@ export interface IEventListProps {
 	onClick: (index: number, event: ISportEvent) => void;
 	buttonTitle: string;
 	emptyListText?: string;
+	dataTestId?: string;
 }

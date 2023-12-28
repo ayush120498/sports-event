@@ -10,8 +10,9 @@ const SportsCard = ({
   onClick,
   buttonTitle,
   date,
+  buttonDataTestId = "sport-button-id",
 }: ISportsCard): JSX.Element => {
-  return <div className="sports-card">
+  return <div className="sports-card" data-testid="card-test">
     <div className="sports-card__container">
       <div className='sports-card__avatar'>
         <Avatar
@@ -32,7 +33,7 @@ const SportsCard = ({
           {`${eventDuration.startTime} - ${eventDuration.endTime}`}
         </p>
         <div className="sports-card__button">
-          <ActionButton onClick={onClick} title={buttonTitle} />
+          <ActionButton onClick={onClick} title={buttonTitle} dataTestId={buttonDataTestId} />
         </div>
       </div>
     </div>

@@ -1,9 +1,8 @@
 
-import { IButtonProps } from './type';
 import './styles.scss';
 
-const ActionButton = ({ title, onClick }: IButtonProps): JSX.Element => (
-  <button title={title} onClick={onClick} className="button">{title}</button>
+const ActionButton = ({ title, onClick, dataTestId = "button-test", }: IButtonProps): JSX.Element => (
+  <button data-testid={dataTestId} title={title} onClick={onClick} className="button">{title}</button>
 );
 
 

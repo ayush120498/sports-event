@@ -10,20 +10,21 @@ import { MAXIMUM_ALLOWED_SELECTION } from '@Constants/index';
 
 import { ISportEvent } from 'types';
 
-
 import './style.scss';
 
 const SportsEvent = (): JSX.Element => {
-  const [isLoading, events, selectedEvents, error, updateEvents] = useEvents();
+
+  const { isLoading, allEvent, selectedEvents, error, updateEvents } = useEvents();
+
   const [selectedEventsList, setSelectedEvents] = useState<ISportEvent[]>([]);
   const [eventList, setEventList] = useState<ISportEvent[]>([]);
 
   const canSelectEvent = (): boolean => selectedEventsList.length < MAXIMUM_ALLOWED_SELECTION;
 
 
-  const showToastMessage = (message: string): void => {
+  const showToastMessage = (message: string, id: string): void => {
     toast.error(message, {
-      toastId: 'sport-event-toast',
+      toastId: id,
     });
   };
 
@@ -50,17 +51,17 @@ const SportsEvent = (): JSX.Element => {
 
   const onEventSelection = (index: number, selectedEvent: ISportEvent): void => {
     if (!canSelectEvent()) {
-      showToastMessage(`You can participate upto ${MAXIMUM_ALLOWED_SELECTION} events`);
+      showToastMessage(`You can participate upto ${MAXIMUM_ALLOWED_SELECTION} events`, 'max-toast-id');
       return;
     }
 
     if (!canParticipateInEvent(selectedEvent)) {
-      showToastMessage("You can't participate in this event as it has conflicting timings with already selected event");
+      showToastMessage("You can't participate in this event as it has conflicting timings with already selected event", 'overlapping-toast-id');
       return;
     }
 
-    events.splice(index, 1);
-    setEventList([...events]);
+    eventList.splice(index, 1);
+    setEventList([...eventList]);
     const finalSelectedEventsList = [...selectedEventsList, selectedEvent];
     setSelectedEvents(finalSelectedEventsList);
     updateEvents(finalSelectedEventsList);
@@ -70,14 +71,14 @@ const SportsEvent = (): JSX.Element => {
   const deleteSelectedItem = (index: number, deletedEvent: ISportEvent): void => {
     selectedEventsList.splice(index, 1);
     setSelectedEvents([...selectedEventsList]);
-    setEventList([...events, deletedEvent]);
+    setEventList([...eventList, deletedEvent]);
     updateEvents([...selectedEventsList]);
   };
 
   useEffect(() => {
-    setEventList(events);
+    setEventList(allEvent);
     setSelectedEvents(selectedEvents);
-  }, [events, selectedEvents]);
+  }, [allEvent, selectedEvents]);
 
 
   if (error) {
@@ -86,7 +87,7 @@ const SportsEvent = (): JSX.Element => {
 
 
   return (
-    <div className="container">
+    <div className="container" data-testid="sports-event">
       <Header />
       {isLoading ? (
         <Loader />
@@ -99,6 +100,7 @@ const SportsEvent = (): JSX.Element => {
               events={eventList}
               buttonTitle="Select"
               emptyListText='No events scheduled for the day'
+              dataTestId='all-events-test'
             />
           </div>
           <div className="events-container__list">
@@ -108,6 +110,7 @@ const SportsEvent = (): JSX.Element => {
               events={selectedEventsList}
               buttonTitle="Delete"
               emptyListText='Please select an event to participate'
+              dataTestId='selected-events-test'
             />
           </div>
         </div>

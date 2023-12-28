@@ -1,11 +1,11 @@
 import SportsCard from '@Components/Card';
-
-import './style.scss';
 import { IEventListProps } from './type';
 
+import './style.scss';
 
-const EventList = ({ heading, events, buttonTitle, emptyListText = "No events scheduled", onClick, }: IEventListProps): JSX.Element => (
-  <div className="event-list scrollbar" >
+
+const EventList = ({ heading, events, buttonTitle, onClick, emptyListText = "No events scheduled", dataTestId = "event-test" }: IEventListProps): JSX.Element => (
+  <div className="event-list scrollbar" data-testid={dataTestId}>
     <div className="event-list__heading">
       <h2>
         {heading}
@@ -29,6 +29,7 @@ const EventList = ({ heading, events, buttonTitle, emptyListText = "No events sc
             }}
             onClick={() => onClick(index, event)}
             buttonTitle={buttonTitle}
+            buttonDataTestId={`sports-button-test-${event.id}`}
           />
         </div>
       ))}

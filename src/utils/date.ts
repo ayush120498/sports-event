@@ -7,17 +7,17 @@ const dateFormat = {
 	dateTime: 'dd/MM/yyyy p',
 };
 
-const formatDate = (date: string): string | undefined => {
+const formatDate = (date: string): string => {
 	const formattedDate = format(parseISO(date), dateFormat.dateWithAmPm);
 	return formattedDate;
 };
 
-const formatDateTime = (date: string): string | undefined => {
+const formatDateTime = (date: string): string => {
 	const formattedDate = format(parseISO(date), dateFormat.dateTime);
 	return formattedDate;
 };
 
-const getFormattedTime = (date: string): string | undefined => {
+const getFormattedTime = (date: string): string => {
 	const formattedDate = format(parseISO(date), dateFormat.timeFormat);
 	return formattedDate;
 };
