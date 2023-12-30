@@ -62,9 +62,9 @@ const mock = vi.hoisted(() => {
   return {
     isLoading: true,
     allEvent: [] as ISportEvent[],
-    selectedEvents: [] as ISportEvent[],
+    selectedEvents: new Map<number, ISportEvent>(),
     error: null as Error | null,
-    updateEvents: vi.fn()
+    addEventsToLocalStorage: vi.fn()
   }
 })
 
@@ -110,16 +110,16 @@ describe('Test cases for SportsEvent', () => {
     const selectedEventsList = selectedEventListContainer.getElementsByClassName('event-list__card');
     const allEventListContainer = screen.getByTestId('all-events-test');
     const allEventsList = allEventListContainer.getElementsByClassName('event-list__card');
-
     expect(selectedEventsList).length(1);
     expect(allEventsList).length(4);
-    expect(mock.updateEvents).toHaveBeenCalledOnce();
+    expect(mock.addEventsToLocalStorage).toHaveBeenCalledOnce();
 
   });
 
   it('should not select if event has an overlapping timings', async () => {
 
-    mock.selectedEvents = [{
+
+    mock.selectedEvents = new Map([[1, {
       "id": 1,
       "eventName": "Football Match",
       "eventType": "Soccer",
@@ -128,7 +128,7 @@ describe('Test cases for SportsEvent', () => {
       "endTime": "4:30 PM",
       "startDateTime": "01/04/2023 2:30 PM",
       "endDateTime": "01/04/2023 4:30 PM"
-    }]
+    }]] as [[number, ISportEvent]]);
 
     render(<SportsEvent />);
 
@@ -147,7 +147,7 @@ describe('Test cases for SportsEvent', () => {
 
   it('should delete an event if delete button is pressed', () => {
 
-    mock.selectedEvents = [{
+    mock.selectedEvents = new Map([[1, {
       "id": 1,
       "eventName": "Football Match",
       "eventType": "Soccer",
@@ -156,7 +156,7 @@ describe('Test cases for SportsEvent', () => {
       "endTime": "4:30 PM",
       "startDateTime": "01/04/2023 2:30 PM",
       "endDateTime": "01/04/2023 4:30 PM"
-    }]
+    }]] as [[number, ISportEvent]]);
 
     render(<SportsEvent />);
 
@@ -168,7 +168,6 @@ describe('Test cases for SportsEvent', () => {
     const allEventListContainer = screen.getByTestId('all-events-test');
     const allEventsList = allEventListContainer.getElementsByClassName('event-list__card');
 
-    screen.debug();
     expect(selectedEventsList).length(0);
     expect(allEventsList).length(5);
 
@@ -177,8 +176,9 @@ describe('Test cases for SportsEvent', () => {
 
   it('should not be able to  select more than 3 events ', async () => {
 
-    mock.selectedEvents = [];
+    mock.selectedEvents = new Map();
     mock.allEvent = [...mockData];
+
     render(<SportsEvent />);
 
     for (let i = 1; i <= mockData.length; i++) {

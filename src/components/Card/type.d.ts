@@ -1,11 +1,10 @@
 interface ISportsCard {
+	id: number;
 	eventName: string;
 	eventType: string;
-	eventDuration: {
-		startTime: string;
-		endTime: string;
-	};
-	onClick: React.MouseEventHandler<HTMLButtonElement>;
+	startTime: string;
+	endTime: string;
+	onClick: (id: number) => void;
 	buttonTitle: string;
 	date: string;
 	buttonDataTestId?: string;

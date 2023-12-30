@@ -52,7 +52,7 @@ describe('Test cases for event list', () => {
     />);
     const element = screen.getByTestId('sports-button-test-1');
     fireEvent.click(element);
-    expect(mockFn).toHaveBeenCalledWith(0, sportsEvent);
+    expect(mockFn).toHaveBeenCalledWith(1, sportsEvent);
   });
 
 });

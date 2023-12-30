@@ -16,18 +16,19 @@ interface ISportsEventResponse {
 interface IListResponse {
 	isLoading: boolean;
 	allEvent: ISportEvent[];
-	selectedEvents: ISportEvent[];
+	selectedEvents: Map<number, ISportEvent>;
 	error: Error | null;
-	updateEvents: (selectedEvent: ISportEvent[]) => void;
+	addEventsToLocalStorage: (selectedEvent: Map<number, ISportEvent>) => void;
 }
 
 const useEvents = (): IListResponse => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [events, setEvents] = useState<ISportEvent[]>([]);
-	const [selectedEvents, setSelectedEvents] = useState<ISportEvent[]>([]);
+	const [selectedEvents, setSelectedEvents] = useState<Map<number, ISportEvent>>(new Map());
+
 	const [isError, setError] = useState<Error | null>(null);
 
-	const parseEventData = (data: ISportsEventResponse[]): ISportEvent[] => {
+	const transformEventList = (data: ISportsEventResponse[]): ISportEvent[] => {
 		const parsedData = data.map((event: ISportsEventResponse) => ({
 			id: event.id,
 			eventName: event.event_name,
@@ -42,40 +43,38 @@ const useEvents = (): IListResponse => {
 		return parsedData;
 	};
 
-	const fetchDataFromLocalStorage = useCallback((eventList: ISportEvent[]) => {
-		const items: ISportEvent[] | null = getItem(EVENTS_LOCAL_STORAGE_KEY);
-		if (!items || !items.length) {
-			setSelectedEvents([]);
-			setEvents(eventList);
+	const getSelectedEvent = (): void => {
+		const selectedItems = getItem(EVENTS_LOCAL_STORAGE_KEY) as [[number, ISportEvent]];
+
+		if (!selectedItems) {
 			return;
 		}
 
-		const updatedEvents = eventList.filter((event) => items.findIndex((item) => item.id === event.id) === -1);
-
-		setEvents([...updatedEvents]);
-		setSelectedEvents(items);
-	}, []);
+		const transformedSelectedItems = new Map<number, ISportEvent>(selectedItems);
+		setSelectedEvents(transformedSelectedItems);
+	};
 
 	const fetchEvents = useCallback(async (): Promise<void> => {
 		try {
 			const resp = await client.get<ISportsEventResponse[]>('');
 			const data = resp?.data;
-			const parsedEvents = parseEventData(data);
-			fetchDataFromLocalStorage(parsedEvents);
+			const eventList = transformEventList(data);
+			setEvents(eventList);
 		} catch (error) {
 			setError(new Error('Error in fetching events'));
 		}
 		setIsLoading(false);
-	}, [fetchDataFromLocalStorage]);
+	}, []);
 
 	useEffect(() => {
 		setIsLoading(true);
-
 		void fetchEvents();
+		getSelectedEvent();
 	}, [fetchEvents]);
 
-	const updateEvents = useCallback((selectedEventList: ISportEvent[]) => {
-		setItem(EVENTS_LOCAL_STORAGE_KEY, selectedEventList);
+	const addEventsToLocalStorage = useCallback((selectedEventList: Map<number, ISportEvent>) => {
+		const convertedArray = Array.from(selectedEventList.entries());
+		setItem(EVENTS_LOCAL_STORAGE_KEY, convertedArray);
 	}, []);
 
 	return {
@@ -83,7 +82,7 @@ const useEvents = (): IListResponse => {
 		allEvent: events,
 		selectedEvents,
 		error: isError,
-		updateEvents,
+		addEventsToLocalStorage,
 	};
 };
 

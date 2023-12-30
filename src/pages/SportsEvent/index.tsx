@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 
 import Header from '@Components/Header';
@@ -14,12 +14,8 @@ import './style.scss';
 
 const SportsEvent = (): JSX.Element => {
 
-  const { isLoading, allEvent, selectedEvents, error, updateEvents } = useEvents();
-
-  const [selectedEventsList, setSelectedEvents] = useState<ISportEvent[]>([]);
-  const [eventList, setEventList] = useState<ISportEvent[]>([]);
-
-  const canSelectEvent = (): boolean => selectedEventsList.length < MAXIMUM_ALLOWED_SELECTION;
+  const { isLoading, allEvent, error, selectedEvents, addEventsToLocalStorage } = useEvents();
+  const [selectedItems, setSelectedItems] = useState<Map<number, ISportEvent>>(new Map());
 
 
   const showToastMessage = (message: string, id: string): void => {
@@ -28,57 +24,71 @@ const SportsEvent = (): JSX.Element => {
     });
   };
 
-  const canParticipateInEvent = (sportsEvent: ISportEvent): boolean => {
+
+  const canParticipateInEvent = (selectedEvent: ISportEvent, selectedList: Map<number, ISportEvent>): boolean => {
     let isValidEvent = true;
-    selectedEventsList.forEach((event) => {
+
+    selectedList.forEach((event) => {
       const isIntervalOverlapping = areOverLappingIntervals(
         {
           startTime: event.startDateTime,
           endTime: event.endDateTime,
         },
         {
-          startTime: sportsEvent.startDateTime,
-          endTime: sportsEvent.endDateTime,
+          startTime: selectedEvent.startDateTime,
+          endTime: selectedEvent.endDateTime,
         },
       );
       if (isIntervalOverlapping) {
         isValidEvent = false;
       }
-    });
+    })
     return isValidEvent;
   };
 
-
-  const onEventSelection = (index: number, selectedEvent: ISportEvent): void => {
-    if (!canSelectEvent()) {
-      showToastMessage(`You can participate upto ${MAXIMUM_ALLOWED_SELECTION} events`, 'max-toast-id');
-      return;
-    }
-
-    if (!canParticipateInEvent(selectedEvent)) {
-      showToastMessage("You can't participate in this event as it has conflicting timings with already selected event", 'overlapping-toast-id');
-      return;
-    }
-
-    eventList.splice(index, 1);
-    setEventList([...eventList]);
-    const finalSelectedEventsList = [...selectedEventsList, selectedEvent];
-    setSelectedEvents(finalSelectedEventsList);
-    updateEvents(finalSelectedEventsList);
-  };
-
-
-  const deleteSelectedItem = (index: number, deletedEvent: ISportEvent): void => {
-    selectedEventsList.splice(index, 1);
-    setSelectedEvents([...selectedEventsList]);
-    setEventList([...eventList, deletedEvent]);
-    updateEvents([...selectedEventsList]);
-  };
-
   useEffect(() => {
-    setEventList(allEvent);
-    setSelectedEvents(selectedEvents);
-  }, [allEvent, selectedEvents]);
+    setSelectedItems(selectedEvents);
+  }, [selectedEvents])
+
+
+
+  const selectedItemsList = useMemo(() => {
+    return allEvent.filter((item) => selectedItems.has(item.id))
+  }, [selectedItems, allEvent]);
+
+
+  const canSelectEvent = (selectedEvent: Map<number, ISportEvent>): boolean => selectedEvent.size < MAXIMUM_ALLOWED_SELECTION;
+
+  const onEventSelection = useCallback((itemId: number, selectedEvent: ISportEvent) => {
+
+    setSelectedItems((prevSelected: Map<number, ISportEvent>) => {
+      if (!canSelectEvent(prevSelected)) {
+        showToastMessage(`You can participate upto ${MAXIMUM_ALLOWED_SELECTION} events`, 'max-toast-id');
+        return prevSelected;
+      };
+
+      if (!canParticipateInEvent(selectedEvent, prevSelected)) {
+        showToastMessage("You can't participate in this event as it has conflicting timings with already selected event", 'overlapping-toast-id');
+        return prevSelected;
+      }
+
+      const newSelectedItems = new Map(prevSelected);
+      newSelectedItems.set(itemId, selectedEvent);
+      addEventsToLocalStorage(newSelectedItems);
+      return newSelectedItems;
+    });
+
+  }, [addEventsToLocalStorage]);
+
+
+  const onEventDeletion = useCallback((itemId: number) => {
+    setSelectedItems((prevSelected: Map<number, ISportEvent>) => {
+      const newSelectedItems = new Map(prevSelected);
+      newSelectedItems.delete(itemId);
+      addEventsToLocalStorage(newSelectedItems);
+      return newSelectedItems;
+    });
+  }, [addEventsToLocalStorage]);
 
 
   if (error) {
@@ -97,17 +107,18 @@ const SportsEvent = (): JSX.Element => {
             <EventList
               heading="All events"
               onClick={onEventSelection}
-              events={eventList}
+              events={allEvent}
               buttonTitle="Select"
               emptyListText='No events scheduled for the day'
               dataTestId='all-events-test'
+              selectedEventList={selectedItems}
             />
           </div>
           <div className="events-container__list">
             <EventList
               heading="Selected events"
-              onClick={deleteSelectedItem}
-              events={selectedEventsList}
+              onClick={onEventDeletion}
+              events={selectedItemsList}
               buttonTitle="Delete"
               emptyListText='Please select an event to participate'
               dataTestId='selected-events-test'

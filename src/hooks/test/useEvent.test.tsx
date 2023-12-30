@@ -1,6 +1,8 @@
 import { it, describe, vi } from "vitest";
 import useEvents from "../useEvents";
 import { renderHook, waitFor } from "@testing-library/react";
+import { setItem } from "@Utils/localStorage";
+import { EVENTS_LOCAL_STORAGE_KEY } from "@Constants/index";
 
 
 
@@ -58,6 +60,19 @@ describe('Test cases for useEvents', () => {
 
   it('should set selected events in local storage', async () => {
 
+    const selectedEvents = new Map([[1, {
+      "id": 2,
+      "eventName": "Football Match",
+      "eventType": "Soccer",
+      "dateOfEvent": "01/04/2023",
+      "startTime": "2:30 PM",
+      "endTime": "4:30 PM",
+      "startDateTime": "01/04/2023 2:30 PM",
+      "endDateTime": "01/04/2023 4:30 PM"
+    }]]);
+
+    setItem(EVENTS_LOCAL_STORAGE_KEY, Array.from(selectedEvents.entries()));
+
     mockAxiosData.get.mockResolvedValue({
       data: [{
         "id": 1,
@@ -76,21 +91,10 @@ describe('Test cases for useEvents', () => {
 
     const { result } = renderHook(() => useEvents());
 
-    result.current.updateEvents([{
-      "id": 2,
-      "eventName": "Football Match",
-      "eventType": "Soccer",
-      "dateOfEvent": "01/04/2023",
-      "startTime": "2:30 PM",
-      "endTime": "4:30 PM",
-      "startDateTime": "01/04/2023 2:30 PM",
-      "endDateTime": "01/04/2023 4:30 PM"
-    }])
-
 
     await waitFor(() => {
       expect(result.current.isLoading).toBeFalsy();
-      expect(result.current.allEvent).toHaveLength(1);
+      expect(result.current.allEvent).toHaveLength(2);
       expect(result.current.selectedEvents).toHaveLength(1);
       expect(result.current.error).toBeNull();
     })
@@ -99,10 +103,13 @@ describe('Test cases for useEvents', () => {
   it('should set error if API call is failed', async () => {
 
     mockAxiosData.get.mockRejectedValue(new Error("Error in fetching events"));
+
     const { result } = renderHook(() => useEvents());
+
     await waitFor(() => {
       expect(result.current.error?.message).toEqual('Error in fetching events');
-    })
+    });
+
   });
 
 
