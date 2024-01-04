@@ -1,0 +1,8 @@
+.container {
+  height: 100vh;
+
+  &__child {
+    padding-top: 9rem;
+    height: calc(100% - 90px);
+  }
+}

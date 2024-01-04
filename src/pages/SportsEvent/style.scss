@@ -1,11 +1,16 @@
 .events-container {
-  padding-top: 95px;
   display: flex;
-  height: calc(100% - 95px);
-  &__list {
-    flex: 50%;
+  height: 100%;
+  &__list-all {
+    flex: 80%;
+    height: 100%;
+    overflow: auto;
+
+  }
+
+  &__list-selected {
+    flex: 20%;
     height: 100%;
     overflow: auto;
   }
-
 }

@@ -29,6 +29,12 @@
       "@Utils/*": [
         "./utils/*"
       ],
+      "@Context/*": [
+        "./context/*"
+      ],
+      "@HOC/*": [
+        "./hoc/*"
+      ],
 
     }
   }

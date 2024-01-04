@@ -1,20 +1,20 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 
-import Header from '@Components/Header';
+import useEvents from '@Hooks/useEvents';
+import withLayout from '@HOC/withLayout/withLayout';
 import EventList from '@Components/EventList';
 import Loader from '@Components/Loader';
-import useEvents from '@Hooks/useEvents';
 import { areOverLappingIntervals } from '@Utils/date';
 import { MAXIMUM_ALLOWED_SELECTION } from '@Constants/index';
-
 import { ISportEvent } from 'types';
 
 import './style.scss';
 
-const SportsEvent = (): JSX.Element => {
+const SportsEvent = withLayout((): JSX.Element => {
 
   const { isLoading, allEvent, error, selectedEvents, addEventsToLocalStorage } = useEvents();
+
   const [selectedItems, setSelectedItems] = useState<Map<number, ISportEvent>>(new Map());
 
 
@@ -97,13 +97,12 @@ const SportsEvent = (): JSX.Element => {
 
 
   return (
-    <div className="container" data-testid="sports-event">
-      <Header />
+    <>
       {isLoading ? (
         <Loader />
       ) : (
         <div className="events-container">
-          <div className="events-container__list">
+          <div className="events-container__list-all">
             <EventList
               heading="All events"
               onClick={onEventSelection}
@@ -114,7 +113,7 @@ const SportsEvent = (): JSX.Element => {
               selectedEventList={selectedItems}
             />
           </div>
-          <div className="events-container__list">
+          <div className="events-container__list-selected">
             <EventList
               heading="Selected events"
               onClick={onEventDeletion}
@@ -127,8 +126,10 @@ const SportsEvent = (): JSX.Element => {
         </div>
       )}
       <ToastContainer autoClose={3000} hideProgressBar />
-    </div>
+    </>
   );
-};
+});
+
+
 
 export default SportsEvent;
