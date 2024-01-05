@@ -1,6 +1,8 @@
 @use '@Styles/__variables' as *;
 
 .event-list {
+  height: 100%;
+
   &__heading {
     position: fixed;
     height: 4rem;
@@ -11,7 +13,6 @@
   }
 
   &__list {
-    height: 100%;
     padding: 7rem 1rem 1rem 1rem;
     display: flex;
     flex-wrap: wrap;
@@ -20,6 +21,7 @@
   &__card {
     margin: 0 1.6rem 1.6rem 0;
     width: 28rem;
+    flex-grow: 1;
   }
 
   &__empty {

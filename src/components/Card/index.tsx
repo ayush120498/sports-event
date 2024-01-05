@@ -1,7 +1,10 @@
-import { useEffect } from 'react';
 
 import ActionButton from '@Components/Button';
 import Avatar from '@Components/Avatar';
+
+import { formatDate, formateTime } from '@Utils/date';
+import { ISportEvent } from 'types';
+import { ISportsCard } from './type';
 
 import './style.scss';
 
@@ -13,14 +16,22 @@ const SportsCard = ({
   endTime,
   onClick,
   buttonTitle,
-  date,
   buttonDataTestId = "sport-button-id",
 
 }: ISportsCard): JSX.Element => {
 
-  useEffect(() => {
-    console.log("Handle change");
-  })
+  const handleClick = (): void => {
+    const event: ISportEvent = {
+      id,
+      eventName,
+      eventType,
+      startTime,
+      endTime,
+    }
+
+    onClick(event);
+  }
+
 
   return <div className="sports-card" data-testid="card-test">
     <div className="sports-card__container">
@@ -37,17 +48,18 @@ const SportsCard = ({
           {eventType}
         </p>
         <p className='sports-card__sub-heading'>
-          {date}
+          {formatDate(startTime)}
         </p>
         <p className='sports-card__sub-heading'>
-          {`${startTime} - ${endTime}`}
+          {`${formateTime(startTime)} - ${formateTime(endTime)}`}
         </p>
         <div className="sports-card__button">
-          <ActionButton onClick={() => onClick(id)} title={buttonTitle} dataTestId={buttonDataTestId} />
+          <ActionButton onClick={() => handleClick()} title={buttonTitle} dataTestId={buttonDataTestId} />
         </div>
       </div>
     </div>
   </div>
 };
+
 
 export default SportsCard;

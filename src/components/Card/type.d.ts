@@ -1,11 +1,12 @@
+import { ISportEvent } from 'types';
+
 interface ISportsCard {
 	id: number;
 	eventName: string;
 	eventType: string;
-	startTime: string;
-	endTime: string;
-	onClick: (id: number) => void;
+	startTime: Date;
+	endTime: Date;
+	onClick: (event: ISportEvent) => void;
 	buttonTitle: string;
-	date: string;
 	buttonDataTestId?: string;
 }

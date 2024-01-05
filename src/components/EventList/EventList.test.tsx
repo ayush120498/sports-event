@@ -8,11 +8,8 @@ const sportsEvent: ISportEvent = {
   id: 1,
   eventName: "400M Race",
   eventType: "400M Race",
-  startTime: "12:00PM",
-  endTime: " 1:00PM",
-  dateOfEvent: "12/12/2009",
-  startDateTime: '12/12/2009 12:00PM',
-  endDateTime: '12/12/2009 1:00PM'
+  startTime: new Date(),
+  endTime: new Date(),
 }
 
 describe('Test cases for event list', () => {
@@ -52,7 +49,7 @@ describe('Test cases for event list', () => {
     />);
     const element = screen.getByTestId('sports-button-test-1');
     fireEvent.click(element);
-    expect(mockFn).toHaveBeenCalledWith(1, sportsEvent);
+    expect(mockFn).toHaveBeenCalledWith(sportsEvent);
   });
 
 });

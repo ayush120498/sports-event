@@ -31,12 +31,12 @@ const SportsEvent = withLayout((): JSX.Element => {
     selectedList.forEach((event) => {
       const isIntervalOverlapping = areOverLappingIntervals(
         {
-          startTime: event.startDateTime,
-          endTime: event.endDateTime,
+          startTime: event.startTime,
+          endTime: event.endTime,
         },
         {
-          startTime: selectedEvent.startDateTime,
-          endTime: selectedEvent.endDateTime,
+          startTime: selectedEvent.startTime,
+          endTime: selectedEvent.endTime,
         },
       );
       if (isIntervalOverlapping) {
@@ -59,11 +59,11 @@ const SportsEvent = withLayout((): JSX.Element => {
 
   const canSelectEvent = (selectedEvent: Map<number, ISportEvent>): boolean => selectedEvent.size < MAXIMUM_ALLOWED_SELECTION;
 
-  const onEventSelection = useCallback((itemId: number, selectedEvent: ISportEvent) => {
+  const onEventSelection = useCallback((selectedEvent: ISportEvent) => {
 
     setSelectedItems((prevSelected: Map<number, ISportEvent>) => {
       if (!canSelectEvent(prevSelected)) {
-        showToastMessage(`You can participate upto ${MAXIMUM_ALLOWED_SELECTION} events`, 'max-toast-id');
+        showToastMessage(`You cannot participate more than ${MAXIMUM_ALLOWED_SELECTION} events`, 'max-toast-id');
         return prevSelected;
       };
 
@@ -73,7 +73,7 @@ const SportsEvent = withLayout((): JSX.Element => {
       }
 
       const newSelectedItems = new Map(prevSelected);
-      newSelectedItems.set(itemId, selectedEvent);
+      newSelectedItems.set(selectedEvent.id, selectedEvent);
       addEventsToLocalStorage(newSelectedItems);
       return newSelectedItems;
     });
@@ -81,10 +81,10 @@ const SportsEvent = withLayout((): JSX.Element => {
   }, [addEventsToLocalStorage]);
 
 
-  const onEventDeletion = useCallback((itemId: number) => {
+  const onEventDeletion = useCallback((selectedEvent: ISportEvent) => {
     setSelectedItems((prevSelected: Map<number, ISportEvent>) => {
       const newSelectedItems = new Map(prevSelected);
-      newSelectedItems.delete(itemId);
+      newSelectedItems.delete(selectedEvent.id);
       addEventsToLocalStorage(newSelectedItems);
       return newSelectedItems;
     });

@@ -1,41 +1,28 @@
-import { areIntervalsOverlapping, format, parseISO } from 'date-fns';
 import { IDuration } from 'types';
 
-const dateFormat = {
-	dateWithAmPm: 'dd/MM/yyyy',
-	timeFormat: 'p',
-	dateTime: 'dd/MM/yyyy p',
-};
-
-const formatDate = (date: string): string => {
-	const formattedDate = format(parseISO(date), dateFormat.dateWithAmPm);
+const formatDate = (date: Date): string => {
+	const formattedDate = new Intl.DateTimeFormat('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }).format(
+		date
+	);
 	return formattedDate;
 };
 
-const formatDateTime = (date: string): string => {
-	const formattedDate = format(parseISO(date), dateFormat.dateTime);
-	return formattedDate;
-};
-
-const getFormattedTime = (date: string): string => {
-	const formattedDate = format(parseISO(date), dateFormat.timeFormat);
-	return formattedDate;
+const formateTime = (time: Date): string => {
+	const formattedTime = time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+	return formattedTime;
 };
 
 const areOverLappingIntervals = (date1: IDuration, date2: IDuration): boolean => {
-	const isOverlapping = areIntervalsOverlapping(
-		{
-			start: new Date(date1.startTime),
-			end: new Date(date1.startTime),
-		},
-		{
-			start: new Date(date2.startTime),
-			end: new Date(date2.startTime),
-		},
-		{ inclusive: true }
-	);
+	const leftStartTime = new Date(date1.startTime).getTime();
+	const leftEndTime = new Date(date1.endTime).getTime();
+	const rightStartTime = new Date(date2.startTime).getTime();
+	const rightEndTime = new Date(date2.endTime).getTime();
 
-	return isOverlapping;
+	if (!(leftStartTime <= leftEndTime && rightStartTime <= rightEndTime)) {
+		throw new Error('Invalid interval');
+	}
+
+	return leftStartTime <= rightEndTime && rightStartTime <= leftEndTime;
 };
 
-export { formatDate, getFormattedTime, formatDateTime, areOverLappingIntervals };
+export { formatDate, formateTime, areOverLappingIntervals };

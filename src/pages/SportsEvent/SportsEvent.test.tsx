@@ -4,59 +4,44 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import SportsEvent from './';
 import { ISportEvent } from 'types';
 
-
 const mockData = [
   {
     "id": 1,
     "eventName": "Football Match",
     "eventType": "Soccer",
-    "dateOfEvent": "01/04/2023",
-    "startTime": "2:30 PM",
-    "endTime": "4:30 PM",
-    "startDateTime": "01/04/2023 2:30 PM",
-    "endDateTime": "01/04/2023 4:30 PM"
+    "startTime": new Date("2023-04-01T09:00:00.000Z"),
+    "endTime": new Date("2023-04-01T11:00:00.000Z")
   },
   {
     "id": 2,
-    "eventName": "Tennis Tournament",
-    "eventType": "Tennis",
-    "dateOfEvent": "01/04/2023",
-    "startTime": "2:30 PM",
-    "endTime": "4:30 PM",
-    "startDateTime": "01/04/2023 2:30 PM",
-    "endDateTime": "01/04/2023 4:30 PM"
+    "eventName": "Basketball Game",
+    "eventType": "Basketball",
+    "startTime": new Date("2023-04-02T09:00:00.000Z"),
+    "endTime": new Date("2023-04-02T11:00:00.000Z")
   },
   {
     "id": 3,
-    "eventName": "Sprint Race",
-    "eventType": "Athletics",
-    "dateOfEvent": "01/04/2023",
-    "startTime": "2:30 AM",
-    "endTime": "4:30 AM",
-    "startDateTime": "01/04/2023 2:30 AM",
-    "endDateTime": "01/04/2023 4:30 AM"
+    "eventName": "Tennis Tournament",
+    "eventType": "Tennis",
+    "startTime": new Date("2023-04-03T09:00:00.000Z"),
+    "endTime": new Date("2023-04-03T11:00:00.000Z")
   },
   {
     "id": 4,
-    "eventName": "Hockey Match",
-    "eventType": "Field Hockey",
-    "dateOfEvent": "02/04/2023",
-    "startTime": "12:30 AM",
-    "endTime": "2:30 AM",
-    "startDateTime": "02/04/2023 12:30 AM",
-    "endDateTime": "02/04/2023 2:30 AM"
+    "eventName": "Sprint Race",
+    "eventType": "Athletics",
+    "startTime": new Date("2023-04-04T09:00:00.000Z"),
+    "endTime": new Date("2023-04-04T11:00:00.000Z")
   },
   {
     "id": 5,
-    "eventName": "Swimming Competition",
-    "eventType": "Swimming",
-    "dateOfEvent": "01/04/2023",
-    "startTime": "4:00 PM",
-    "endTime": "6:00 PM",
-    "startDateTime": "01/04/2023 4:00 PM",
-    "endDateTime": "01/04/2023 6:00 PM"
-  }
-];
+    "eventName": "Hockey Match",
+    "eventType": "Field Hockey",
+    "startTime": new Date("2023-04-05T19:00:00.000Z"),
+    "endTime": new Date("2023-04-05T21:00:00.000Z")
+  },
+
+]
 
 const mock = vi.hoisted(() => {
   return {
@@ -186,7 +171,7 @@ describe('Test cases for SportsEvent', () => {
       fireEvent.click(cardButton);
     }
 
-    expect(await screen.findByText("You can participate upto 3 events")).toBeInTheDocument();
+    expect(await screen.findByText("You cannot participate more than 3 events")).toBeInTheDocument();
 
     const selectedEventListContainer = screen.getByTestId('selected-events-test');
     const selectedEventsList = selectedEventListContainer.getElementsByClassName('event-list__card');

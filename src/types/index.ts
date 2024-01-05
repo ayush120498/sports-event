@@ -1,15 +1,12 @@
 export interface IDuration {
-	startTime: string;
-	endTime: string;
+	startTime: Date;
+	endTime: Date;
 }
 
 export interface ISportEvent {
 	id: number;
 	eventName: string;
 	eventType: string;
-	startTime: string;
-	endTime: string;
-	dateOfEvent: string;
-	startDateTime: string;
-	endDateTime: string;
+	startTime: Date;
+	endTime: Date;
 }

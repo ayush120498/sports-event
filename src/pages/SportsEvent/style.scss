@@ -1,16 +1,45 @@
 .events-container {
   display: flex;
+  flex-direction: column;
   height: 100%;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+
   &__list-all {
-    flex: 80%;
+    flex: 60%;
     height: 100%;
     overflow: auto;
 
+    @media (min-width: 768px) {
+      flex: 50%;
+    }
+
+    @media (min-width: 1280px) {
+      flex: 70%;
+    }
+
+    @media (min-width: 1440px) {
+      flex: 75%;
+    }
   }
 
   &__list-selected {
-    flex: 20%;
+    flex: 40%;
     height: 100%;
     overflow: auto;
+
+    @media (min-width: 768px) {
+      flex: 50%;
+    }
+
+    @media (min-width: 1280px) {
+      flex: 30%;
+    }
+
+    @media (min-width: 1440px) {
+      flex: 25%;
+    }
   }
 }

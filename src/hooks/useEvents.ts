@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 import client from '@Utils/axios';
 import { getItem, setItem } from '@Utils/localStorage';
 import { EVENTS_LOCAL_STORAGE_KEY } from '@Constants/index';
-import { formatDate, formatDateTime, getFormattedTime } from '@Utils/date';
 import { ISportEvent } from 'types';
 
 interface ISportsEventResponse {
@@ -33,11 +32,8 @@ const useEvents = (): IListResponse => {
 			id: event.id,
 			eventName: event.event_name,
 			eventType: event.event_category,
-			dateOfEvent: formatDate(event.start_time),
-			startTime: getFormattedTime(event.start_time),
-			endTime: getFormattedTime(event.end_time),
-			startDateTime: formatDateTime(event.start_time),
-			endDateTime: formatDateTime(event.end_time),
+			startTime: new Date(event.start_time),
+			endTime: new Date(event.end_time),
 		}));
 
 		return parsedData;
