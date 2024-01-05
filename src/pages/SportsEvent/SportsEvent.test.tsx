@@ -108,11 +108,8 @@ describe('Test cases for SportsEvent', () => {
       "id": 1,
       "eventName": "Football Match",
       "eventType": "Soccer",
-      "dateOfEvent": "01/04/2023",
-      "startTime": "2:30 PM",
-      "endTime": "4:30 PM",
-      "startDateTime": "01/04/2023 2:30 PM",
-      "endDateTime": "01/04/2023 4:30 PM"
+      "startTime": new Date("2023-04-01T09:00:00.000Z"),
+      "endTime": new Date("2023-04-01T11:00:00.000Z")
     }]] as [[number, ISportEvent]]);
 
     render(<SportsEvent />);
@@ -136,11 +133,8 @@ describe('Test cases for SportsEvent', () => {
       "id": 1,
       "eventName": "Football Match",
       "eventType": "Soccer",
-      "dateOfEvent": "01/04/2023",
-      "startTime": "2:30 PM",
-      "endTime": "4:30 PM",
-      "startDateTime": "01/04/2023 2:30 PM",
-      "endDateTime": "01/04/2023 4:30 PM"
+      "startTime": new Date("2023-04-01T09:00:00.000Z"),
+      "endTime": new Date("2023-04-01T11:00:00.000Z")
     }]] as [[number, ISportEvent]]);
 
     render(<SportsEvent />);
