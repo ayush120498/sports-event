@@ -16,8 +16,8 @@ const mockData = [
     "id": 2,
     "eventName": "Basketball Game",
     "eventType": "Basketball",
-    "startTime": new Date("2023-04-02T09:00:00.000Z"),
-    "endTime": new Date("2023-04-02T11:00:00.000Z")
+    "startTime": new Date("2023-04-01T09:00:00.000Z"),
+    "endTime": new Date("2023-04-01T11:00:00.000Z")
   },
   {
     "id": 3,
@@ -90,7 +90,6 @@ describe('Test cases for SportsEvent', () => {
 
     const firstCardButton = screen.getByTestId('sports-button-test-1');
     fireEvent.click(firstCardButton);
-
     const selectedEventListContainer = screen.getByTestId('selected-events-test');
     const selectedEventsList = selectedEventListContainer.getElementsByClassName('event-list__card');
     const allEventListContainer = screen.getByTestId('all-events-test');
@@ -102,8 +101,7 @@ describe('Test cases for SportsEvent', () => {
   });
 
   it('should not select if event has an overlapping timings', async () => {
-
-
+    mock.allEvent = [...mockData];
     mock.selectedEvents = new Map([[1, {
       "id": 1,
       "eventName": "Football Match",
