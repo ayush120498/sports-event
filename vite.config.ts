@@ -11,6 +11,7 @@ export default defineConfig({
 		environment: 'jsdom',
 		setupFiles: './src/tests/setup.ts',
 	},
+
 	resolve: {
 		alias: [{ find: '@Styles', replacement: resolve('./src/styles') }],
 	},

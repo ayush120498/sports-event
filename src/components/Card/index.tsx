@@ -32,7 +32,6 @@ const SportsCard = ({
     onClick(event);
   }
 
-
   return <div className="sports-card" data-testid="card-test">
     <div className="sports-card__container">
       <div className='sports-card__avatar'>

@@ -91,7 +91,7 @@ const SportsEvent = withLayout((): JSX.Element => {
 
 
   if (error) {
-    return <p>{error.message}</p>;
+    return <div className='error-message'><h3>{error.message}</h3></div>;
   }
 
 
