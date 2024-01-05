@@ -14,7 +14,6 @@ import './style.scss';
 const SportsEvent = withLayout((): JSX.Element => {
 
   const { isLoading, allEvent, error, selectedEvents, addEventsToLocalStorage } = useEvents();
-
   const [selectedItems, setSelectedItems] = useState<Map<number, ISportEvent>>(new Map());
 
 

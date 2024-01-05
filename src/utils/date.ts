@@ -22,7 +22,7 @@ const areOverLappingIntervals = (date1: IDuration, date2: IDuration): boolean =>
 		throw new Error('Invalid interval');
 	}
 
-	return leftStartTime <= rightEndTime && rightStartTime <= leftEndTime;
+	return leftStartTime < rightEndTime && rightStartTime < leftEndTime;
 };
 
 export { formatDate, formateTime, areOverLappingIntervals };
