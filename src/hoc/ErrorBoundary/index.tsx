@@ -1,4 +1,4 @@
-import { ErrorContext } from 'context/ErrorContext';
+import { ErrorContext } from '@Context/ErrorContext';
 import React, { ReactNode } from 'react';
 
 interface ErrorBoundaryProps {

@@ -5,7 +5,9 @@ const ActionButton = ({ title, onClick, dataTestId = "button-test", }: IButtonPr
   <button
     data-testid={dataTestId}
     title={title} onClick={onClick}
-    className="button">
+    className="button"
+    aria-label={title}
+  >
     {title}
   </button>
 );
