@@ -10,35 +10,43 @@ const mockData = [
     "eventName": "Football Match",
     "eventType": "Soccer",
     "startTime": new Date("2023-04-01T09:00:00.000Z"),
-    "endTime": new Date("2023-04-01T11:00:00.000Z")
+    "endTime": new Date("2023-04-01T11:00:00.000Z"),
+    "icon": "https://img.freepik.com/free-vector/vector-isolated-realistic-soccer-ball-white_1284-41932.jpg"
   },
   {
     "id": 2,
     "eventName": "Basketball Game",
     "eventType": "Basketball",
     "startTime": new Date("2023-04-01T09:00:00.000Z"),
-    "endTime": new Date("2023-04-01T11:00:00.000Z")
+    "endTime": new Date("2023-04-01T11:00:00.000Z"),
+    "icon": "https://img.freepik.com/free-vector/vector-isolated-realistic-soccer-ball-white_1284-41932.jpg"
+
   },
   {
     "id": 3,
     "eventName": "Tennis Tournament",
     "eventType": "Tennis",
     "startTime": new Date("2023-04-03T09:00:00.000Z"),
-    "endTime": new Date("2023-04-03T11:00:00.000Z")
+    "endTime": new Date("2023-04-03T11:00:00.000Z"),
+    "icon": "https://img.freepik.com/free-vector/vector-isolated-realistic-soccer-ball-white_1284-41932.jpg"
+
   },
   {
     "id": 4,
     "eventName": "Sprint Race",
     "eventType": "Athletics",
     "startTime": new Date("2023-04-04T09:00:00.000Z"),
-    "endTime": new Date("2023-04-04T11:00:00.000Z")
+    "endTime": new Date("2023-04-04T11:00:00.000Z"),
+    "icon": "https://img.freepik.com/free-vector/vector-isolated-realistic-soccer-ball-white_1284-41932.jpg"
+
   },
   {
     "id": 5,
     "eventName": "Hockey Match",
     "eventType": "Field Hockey",
     "startTime": new Date("2023-04-05T19:00:00.000Z"),
-    "endTime": new Date("2023-04-05T21:00:00.000Z")
+    "endTime": new Date("2023-04-05T21:00:00.000Z"),
+    "icon": "https://img.freepik.com/free-vector/vector-isolated-realistic-soccer-ball-white_1284-41932.jpg"
   },
 
 ]
@@ -47,13 +55,13 @@ const mock = vi.hoisted(() => {
   return {
     isLoading: true,
     allEvent: [] as ISportEvent[],
-    selectedEvents: new Map<number, ISportEvent>(),
+    storedEvents: new Map<number, ISportEvent>(),
     error: null as Error | null,
     addEventsToLocalStorage: vi.fn()
   }
 })
 
-vi.mock("@Hooks/useEvents", () => {
+vi.mock("@Hooks/useManageEvents", () => {
   return {
     default: vi.fn().mockReturnValue(mock)
   }
@@ -102,7 +110,7 @@ describe('Test cases for SportsEvent', () => {
 
   it('should not select if event has an overlapping timings', async () => {
     mock.allEvent = [...mockData];
-    mock.selectedEvents = new Map([[1, {
+    mock.storedEvents = new Map([[1, {
       "id": 1,
       "eventName": "Football Match",
       "eventType": "Soccer",
@@ -127,7 +135,7 @@ describe('Test cases for SportsEvent', () => {
 
   it('should delete an event if delete button is pressed', () => {
 
-    mock.selectedEvents = new Map([[1, {
+    mock.storedEvents = new Map([[1, {
       "id": 1,
       "eventName": "Football Match",
       "eventType": "Soccer",
@@ -153,7 +161,7 @@ describe('Test cases for SportsEvent', () => {
 
   it('should not be able to  select more than 3 events ', async () => {
 
-    mock.selectedEvents = new Map();
+    mock.storedEvents = new Map();
     mock.allEvent = [...mockData];
 
     render(<SportsEvent />);

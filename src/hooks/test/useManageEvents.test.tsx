@@ -1,5 +1,5 @@
 import { it, describe, vi } from "vitest";
-import useEvents from "../useEvents";
+import useEvents from "../useManageEvents";
 import { renderHook, waitFor } from "@testing-library/react";
 import { setItem } from "@Utils/localStorage";
 import { EVENTS_LOCAL_STORAGE_KEY } from "@Constants/index";
@@ -52,7 +52,7 @@ describe('Test cases for useEvents', () => {
     await waitFor(() => {
       expect(result.current.isLoading).toBeFalsy();
       expect(result.current.allEvent).toHaveLength(2);
-      expect(result.current.selectedEvents).toHaveLength(0);
+      expect(result.current.storedEvents).toHaveLength(0);
       expect(result.current.error).toBeNull();
     })
 
@@ -95,7 +95,7 @@ describe('Test cases for useEvents', () => {
     await waitFor(() => {
       expect(result.current.isLoading).toBeFalsy();
       expect(result.current.allEvent).toHaveLength(2);
-      expect(result.current.selectedEvents).toHaveLength(1);
+      expect(result.current.storedEvents).toHaveLength(1);
       expect(result.current.error).toBeNull();
     })
   });
