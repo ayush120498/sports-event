@@ -34,6 +34,7 @@ const EventList = ({ heading, events, buttonTitle, onClick, emptyListText = "No 
               endTime={event.endTime}
               onClick={onClick}
               buttonTitle={buttonTitle}
+              icon={event.icon}
               buttonDataTestId={`sports-button-test-${event.id}`}
             />
           </div>

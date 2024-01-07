@@ -9,4 +9,5 @@ export interface ISportEvent {
 	eventType: string;
 	startTime: Date;
 	endTime: Date;
+	icon: string;
 }

@@ -1,10 +1,7 @@
 import { IDuration } from 'types';
 
 const formatDate = (date: Date): string => {
-	const formattedDate = new Intl.DateTimeFormat('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }).format(
-		date
-	);
-	return formattedDate;
+	return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 };
 
 const formateTime = (time: Date): string => {

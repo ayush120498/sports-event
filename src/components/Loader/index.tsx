@@ -1,4 +1,4 @@
-import LoaderImage from '@Assets/loader.svg';
+import LoaderImage from '@Assets/images/loader.svg';
 import './style.scss';
 
 const Loader = (): JSX.Element => (

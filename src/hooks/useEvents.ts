@@ -10,6 +10,7 @@ interface ISportsEventResponse {
 	event_category: string;
 	start_time: string;
 	end_time: string;
+	icon: string;
 }
 
 interface IListResponse {
@@ -34,6 +35,7 @@ const useEvents = (): IListResponse => {
 			eventType: event.event_category,
 			startTime: new Date(event.start_time),
 			endTime: new Date(event.end_time),
+			icon: event.icon,
 		}));
 
 		return parsedData;

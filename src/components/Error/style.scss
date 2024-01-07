@@ -1,9 +1,10 @@
 .error-container {
-  height: 100vh;
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
+  height: 100vh;
+  font-size: 5rem;
 
   &__button {
     margin-top: 1.2rem;

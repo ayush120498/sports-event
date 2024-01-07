@@ -106,7 +106,7 @@ const SportsEvent = withLayout((): JSX.Element => {
               heading="All events"
               onClick={onEventSelection}
               events={allEvent}
-              buttonTitle="Select"
+              buttonTitle="Select Event"
               emptyListText='No events scheduled for the day'
               dataTestId='all-events-test'
               selectedEventList={selectedItems}
@@ -117,7 +117,7 @@ const SportsEvent = withLayout((): JSX.Element => {
               heading="Selected events"
               onClick={onEventDeletion}
               events={selectedItemsList}
-              buttonTitle="Delete"
+              buttonTitle="Remove Event"
               emptyListText='Please select an event to participate'
               dataTestId='selected-events-test'
             />

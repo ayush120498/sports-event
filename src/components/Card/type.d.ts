@@ -8,5 +8,6 @@ interface ISportsCard {
 	endTime: Date;
 	onClick: (event: ISportEvent) => void;
 	buttonTitle: string;
+	icon: string;
 	buttonDataTestId?: string;
 }
