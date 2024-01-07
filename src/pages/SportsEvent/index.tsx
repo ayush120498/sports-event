@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 
-import useEvents from '@Hooks/useEvents';
 import withLayout from '@HOC/withLayout/withLayout';
+import useManageEvent from '@Hooks/useManageEvents';
 import EventList from '@Components/EventList';
 import Loader from '@Components/Loader';
 import { areOverLappingIntervals } from '@Utils/date';
@@ -15,7 +15,7 @@ import Paginator from '@Components/Paginator ';
 
 const SportsEvent = withLayout((): JSX.Element => {
 
-  const { isLoading, allEvent, error, selectedEvents, addEventsToLocalStorage } = useEvents();
+  const { isLoading, allEvent, error, storedEvents, addEventsToLocalStorage } = useManageEvent();
   const [selectedItems, setSelectedItems] = useState<Map<number, ISportEvent>>(new Map());
   const { currentData, currentPage, maxPage, jump } = usePagination<ISportEvent>({ data: allEvent, itemsPerPage: 10 });
 
@@ -49,8 +49,8 @@ const SportsEvent = withLayout((): JSX.Element => {
   };
 
   useEffect(() => {
-    setSelectedItems(selectedEvents);
-  }, [selectedEvents])
+    setSelectedItems(storedEvents);
+  }, [storedEvents])
 
 
 

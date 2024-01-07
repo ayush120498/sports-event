@@ -10,6 +10,7 @@ const sportsEvent: ISportEvent = {
   eventType: "400M Race",
   startTime: new Date(),
   endTime: new Date(),
+  icon: ""
 }
 
 describe('Test cases for event list', () => {
