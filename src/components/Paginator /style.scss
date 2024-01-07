@@ -1,0 +1,21 @@
+@use '@Styles/__variables' as *;
+
+
+.pagination {
+  padding: 10px;
+  margin: 15px 0;
+  display: flex;
+  justify-content: center;
+
+  & > span{
+    padding: 15px 20px;
+    border: 1px solid $indigo-1;
+    cursor: pointer;
+    color: $primary;
+  }
+
+  &--selected {
+    background-color: $indigo-1;
+    color: $primary;
+  }
+}

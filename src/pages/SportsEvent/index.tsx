@@ -10,11 +10,14 @@ import { MAXIMUM_ALLOWED_SELECTION } from '@Constants/index';
 import { ISportEvent } from 'types';
 
 import './style.scss';
+import usePagination from '@Hooks/usePagination';
+import Paginator from '@Components/Paginator ';
 
 const SportsEvent = withLayout((): JSX.Element => {
 
   const { isLoading, allEvent, error, selectedEvents, addEventsToLocalStorage } = useEvents();
   const [selectedItems, setSelectedItems] = useState<Map<number, ISportEvent>>(new Map());
+  const { currentData, currentPage, maxPage, jump } = usePagination<ISportEvent>({ data: allEvent, itemsPerPage: 10 });
 
 
   const showToastMessage = (message: string, id: string): void => {
@@ -102,15 +105,20 @@ const SportsEvent = withLayout((): JSX.Element => {
       ) : (
         <div className="events-container">
           <div className="events-container__list-all">
-            <EventList
-              heading="All events"
-              onClick={onEventSelection}
-              events={allEvent}
-              buttonTitle="Select Event"
-              emptyListText='No events scheduled for the day'
-              dataTestId='all-events-test'
-              selectedEventList={selectedItems}
-            />
+            <div className='events-container__list'>
+              <EventList
+                heading="All events"
+                onClick={onEventSelection}
+                events={currentData()}
+                buttonTitle="Select Event"
+                emptyListText='No events scheduled for the day'
+                dataTestId='all-events-test'
+                selectedEventList={selectedItems}
+              />
+            </div>
+            <div className='events-container__paginator'>
+              <Paginator selectedPage={currentPage} selectPageHandler={jump} numberOfPages={maxPage} />
+            </div>
           </div>
           <div className="events-container__list-selected">
             <EventList
