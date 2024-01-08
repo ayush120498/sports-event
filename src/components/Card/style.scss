@@ -22,7 +22,7 @@
     }
 
     &__avatar {
-        margin-right: 10px;
+        margin-right: 1rem;
         width: 15rem;
         border-radius: 1rem;
     }
@@ -40,15 +40,15 @@
     }
 
     &__sub-heading {
-        font-weight: 400;
+        font-weight: $font-weight-normal;
         font-size: 1.5rem;
         line-height: 2rem;
         color: $gray;
-        margin-bottom: 10px;
+        margin-bottom: 1rem;
     }
 
     &__schedule-tags {
-        font-weight: 600;
+        font-weight: $font-weight-medium;
         font-size: 1.2rem;
         line-height: 2rem;
         color: $gray;
