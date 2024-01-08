@@ -59,7 +59,7 @@ const useManageEvent = (): IManageEventResponse => {
 			const eventList = transformEventList(data);
 			setEvents(eventList);
 		} catch (error) {
-			setError(new Error('Error in fetching events'));
+			setError(new Error('Error in fetching events. Please reload'));
 		}
 		setIsLoading(false);
 	}, []);
