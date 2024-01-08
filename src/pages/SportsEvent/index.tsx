@@ -5,6 +5,7 @@ import withLayout from '@HOC/withLayout/withLayout';
 import useManageEvent from '@Hooks/useManageEvents';
 import EventList from '@Components/EventList';
 import Loader from '@Components/Loader';
+import ErrorComponent from '@Components/Error';
 import { areOverLappingIntervals } from '@Utils/date';
 import { MAXIMUM_ALLOWED_SELECTION } from '@Constants/index';
 import { ISportEvent } from 'types';
@@ -13,7 +14,7 @@ import './style.scss';
 
 const SportsEvent = withLayout((): JSX.Element => {
 
-  const { isLoading, allEvent, error, storedEvents, addEventsToLocalStorage } = useManageEvent();
+  const { isLoading, allEvent, error, storedEvents, addEventsToLocalStorage, fetchEvents } = useManageEvent();
   const [selectedItems, setSelectedItems] = useState<Map<number, ISportEvent>>(new Map());
 
 
@@ -44,12 +45,6 @@ const SportsEvent = withLayout((): JSX.Element => {
     })
     return isValidEvent;
   };
-
-  useEffect(() => {
-    setSelectedItems(storedEvents);
-  }, [storedEvents])
-
-
 
   const selectedItemsList = useMemo(() => {
     return allEvent.filter((item) => selectedItems.has(item.id))
@@ -90,40 +85,44 @@ const SportsEvent = withLayout((): JSX.Element => {
   }, [addEventsToLocalStorage]);
 
 
-  if (error) {
-    return <div className='error-message'><h3>{error.message}</h3></div>;
+  useEffect(() => {
+    setSelectedItems(storedEvents);
+  }, [storedEvents])
+
+
+  if (isLoading) {
+    return <Loader />
   }
 
+  if (error) {
+    return <ErrorComponent message={error.message} buttonText='Reload' onClick={() => void fetchEvents()} />;
+  }
 
   return (
     <>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <div className="events-container">
-          <div className="events-container__list-all">
-            <EventList
-              heading="All events"
-              onClick={onEventSelection}
-              events={allEvent}
-              buttonTitle="Select Event"
-              emptyListText='No events scheduled for the day'
-              dataTestId='all-events-test'
-              selectedEventList={selectedItems}
-            />
-          </div>
-          <div className="events-container__list-selected">
-            <EventList
-              heading="Selected events"
-              onClick={onEventDeletion}
-              events={selectedItemsList}
-              buttonTitle="Remove Event"
-              emptyListText='Please select an event to participate'
-              dataTestId='selected-events-test'
-            />
-          </div>
+      <div className="events-container">
+        <div className="events-container__list-all">
+          <EventList
+            heading="All events"
+            onClick={onEventSelection}
+            events={allEvent}
+            buttonTitle="Select Event"
+            emptyListText='No events scheduled for the day'
+            dataTestId='all-events-test'
+            selectedEventList={selectedItems}
+          />
         </div>
-      )}
+        <div className="events-container__list-selected">
+          <EventList
+            heading="Selected events"
+            onClick={onEventDeletion}
+            events={selectedItemsList}
+            buttonTitle="Remove Event"
+            emptyListText='Please select an event to participate'
+            dataTestId='selected-events-test'
+          />
+        </div>
+      </div>
       <ToastContainer autoClose={3000} hideProgressBar />
     </>
   );
