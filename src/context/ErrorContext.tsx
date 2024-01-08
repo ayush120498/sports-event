@@ -5,11 +5,13 @@ interface ErrorContextValue {
   updateError: (value: boolean) => void;
 }
 
-const ErrorContext = createContext<ErrorContextValue | undefined>(undefined);
-
 interface ErrorContextProviderProps {
   children: ReactNode;
 }
+
+const ErrorContext = createContext<ErrorContextValue | undefined>(undefined);
+
+
 
 const ErrorContextProvider = ({ children }: ErrorContextProviderProps): JSX.Element => {
   const [hasError, setHasError] = useState(false);
