@@ -9,7 +9,11 @@ const getItem = (key: string): unknown => {
 		return null;
 	}
 
-	return JSON.parse(items);
+	try {
+		return JSON.parse(items);
+	} catch (e) {
+		return [];
+	}
 };
 
 export { setItem, getItem };
