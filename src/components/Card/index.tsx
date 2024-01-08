@@ -39,10 +39,10 @@ const SportsCard = ({
         <img src={icon} alt='Sports card image' />
       </div>
       <div className="sports-card__content">
-        <h3 className='sports-card__heading line-clamp'>
+        <h3 className='sports-card__heading line-clamp' title={eventName}>
           {eventName}
         </h3>
-        <p className='sports-card__sub-heading line-clamp'>
+        <p className='sports-card__sub-heading line-clamp' title={eventType}>
           {eventType}
         </p>
         <div className='sports-card__schedule'>
