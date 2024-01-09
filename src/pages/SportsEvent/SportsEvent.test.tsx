@@ -57,7 +57,8 @@ const mock = vi.hoisted(() => {
     allEvent: [] as ISportEvent[],
     storedEvents: new Map<number, ISportEvent>(),
     error: null as Error | null,
-    addEventsToLocalStorage: vi.fn()
+    addEventsToLocalStorage: vi.fn(),
+    fetchEvents: vi.fn(),
   }
 })
 
@@ -188,6 +189,9 @@ describe('Test cases for SportsEvent', () => {
     mock.error = new Error("Error in fetch list data");
     render(<SportsEvent />);
     expect(await screen.findByText("Error in fetch list data")).toBeInTheDocument();
+    const errorButton = screen.getByTestId('button-test');
+    fireEvent.click(errorButton);
+    expect(mock.fetchEvents).toHaveBeenCalledOnce();
   });
 
 

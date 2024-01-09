@@ -19,6 +19,7 @@ interface IManageEventResponse {
 	storedEvents: Map<number, ISportEvent>;
 	error: Error | null;
 	addEventsToLocalStorage: (selectedEvent: Map<number, ISportEvent>) => void;
+	fetchEvents: () => Promise<void>;
 }
 
 const useManageEvent = (): IManageEventResponse => {
@@ -53,13 +54,14 @@ const useManageEvent = (): IManageEventResponse => {
 	};
 
 	const fetchEvents = useCallback(async (): Promise<void> => {
+		setIsLoading(true);
 		try {
 			const resp = await client.get<ISportsEventResponse[]>('');
 			const data = resp?.data;
 			const eventList = transformEventList(data);
 			setEvents(eventList);
 		} catch (error) {
-			setError(new Error('Error in fetching events'));
+			setError(new Error('Error in fetching events. Please reload'));
 		}
 		setIsLoading(false);
 	}, []);
@@ -70,7 +72,6 @@ const useManageEvent = (): IManageEventResponse => {
 	}, []);
 
 	useEffect(() => {
-		setIsLoading(true);
 		void fetchEvents();
 		getSelectedEvent();
 	}, [fetchEvents]);
@@ -81,6 +82,7 @@ const useManageEvent = (): IManageEventResponse => {
 		storedEvents,
 		error: isError,
 		addEventsToLocalStorage,
+		fetchEvents,
 	};
 };
 

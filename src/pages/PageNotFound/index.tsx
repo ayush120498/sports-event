@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const PageNotFound = withLayout((): JSX.Element => {
 
   const navigate = useNavigate();
+
   return <ErrorComponent buttonText="Back to home" message='Page not found......' onClick={() => navigate('/')} />
 });
 

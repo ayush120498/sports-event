@@ -102,12 +102,12 @@ describe('Test cases for useEvents', () => {
 
   it('should set error if API call is failed', async () => {
 
-    mockAxiosData.get.mockRejectedValue(new Error("Error in fetching events"));
+    mockAxiosData.get.mockRejectedValue(new Error("Error in fetching events. Please reload"));
 
     const { result } = renderHook(() => useEvents());
 
     await waitFor(() => {
-      expect(result.current.error?.message).toEqual('Error in fetching events');
+      expect(result.current.error?.message).toEqual('Error in fetching events. Please reload');
     });
 
   });
